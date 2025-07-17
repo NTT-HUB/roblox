@@ -3,7 +3,7 @@ local USER_ID = 2740267445 -- 👈 Thay ID tại đây
 -- Tạo NPC từ user ID
 local npc = game.Players:CreateHumanoidModelFromUserId(USER_ID)
 npc.Name = "MyNPC"
-npc.Parent = workspace.NPC
+npc.Parent = workspace:FindFirstChild("NPC") or workspace
 
 -- Đảm bảo nhân vật có HumanoidRootPart và đặt làm PrimaryPart
 local hrp = npc:FindFirstChild("HumanoidRootPart")
@@ -22,23 +22,27 @@ if not workspace:FindFirstChild("Baseplate") then
 	base.Parent = workspace
 end
 
--- Đặt vị trí NPC đứng trên baseplate
-if npc.PrimaryPart then
-	npc:SetPrimaryPartCFrame(CFrame.new(0, 5, 0)) -- Cao 5 để rơi xuống đất
+-- Spawn gần Camera
+local cam = workspace.CurrentCamera
+if cam and npc.PrimaryPart then
+	local camCFrame = cam.CFrame
+	local spawnPos = camCFrame.Position + camCFrame.LookVector * 5 -- Cách 5 đơn vị phía trước camera
+	npc:SetPrimaryPartCFrame(CFrame.new(spawnPos))
 end
 
 -- 🧠 Tạo 2 script con: Move và Animation
 local moveScript = Instance.new("Script")
 moveScript.Name = "Move"
 moveScript.Source = [[
-
+print("Move script chạy")
+-- Bạn có thể thêm logic di chuyển tại đây
 ]]
 moveScript.Parent = npc
-
 
 local animScript = Instance.new("Script")
 animScript.Name = "Animation"
 animScript.Source = [[
-
+print("Animation script chạy")
+-- Bạn có thể thêm logic animation tại đây
 ]]
 animScript.Parent = npc
