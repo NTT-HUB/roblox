@@ -3,7 +3,7 @@ local USER_ID = 2740267445 -- 👈 Thay ID tại đây
 -- Tạo NPC từ user ID
 local npc = game.Players:CreateHumanoidModelFromUserId(USER_ID)
 npc.Name = "MyNPC"
-npc.Parent = workspace
+npc.Parent = workspace.NPC
 
 -- Đảm bảo nhân vật có HumanoidRootPart và đặt làm PrimaryPart
 local hrp = npc:FindFirstChild("HumanoidRootPart")
