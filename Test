@@ -1,17 +1,34 @@
 local USER_ID = 2740267445 -- 👈 Thay ID tại đây
+local HttpService = game:GetService("HttpService")
 
--- Tạo NPC từ user ID
+-- 🧠 Hàm tải Script từ GitHub RAW
+local function loadRemoteScript(name, url, parent)
+	local success, result = pcall(function()
+		return HttpService:GetAsync(url)
+	end)
+
+	if success then
+		local s = Instance.new("Script")
+		s.Name = name
+		s.Source = result
+		s.Parent = parent
+	else
+		warn("Tải script thất bại: " .. name .. " - " .. result)
+	end
+end
+
+-- 🎭 Tạo NPC từ UserId
 local npc = game.Players:CreateHumanoidModelFromUserId(USER_ID)
 npc.Name = "MyNPC"
 npc.Parent = workspace:FindFirstChild("NPC") or workspace
 
--- Đảm bảo nhân vật có HumanoidRootPart và đặt làm PrimaryPart
+-- Đảm bảo có HumanoidRootPart
 local hrp = npc:FindFirstChild("HumanoidRootPart")
 if hrp then
 	npc.PrimaryPart = hrp
 end
 
--- Đảm bảo có Baseplate
+-- ⚙️ Baseplate nếu chưa có
 if not workspace:FindFirstChild("Baseplate") then
 	local base = Instance.new("Part")
 	base.Name = "Baseplate"
@@ -22,27 +39,17 @@ if not workspace:FindFirstChild("Baseplate") then
 	base.Parent = workspace
 end
 
--- Spawn gần Camera
+-- 📷 Đặt vị trí gần camera
 local cam = workspace.CurrentCamera
 if cam and npc.PrimaryPart then
 	local camCFrame = cam.CFrame
-	local spawnPos = camCFrame.Position + camCFrame.LookVector * 5 -- Cách 5 đơn vị phía trước camera
+	local spawnPos = camCFrame.Position + camCFrame.LookVector * 5
 	npc:SetPrimaryPartCFrame(CFrame.new(spawnPos))
 end
 
--- 🧠 Tạo 2 script con: Move và Animation
-local moveScript = Instance.new("Script")
-moveScript.Name = "Move"
-moveScript.Source = [[
-print("Move script chạy")
--- Bạn có thể thêm logic di chuyển tại đây
-]]
-moveScript.Parent = npc
+-- 🌐 Gắn Move.lua và Animation.lua từ GitHub
+local moveURL = "https://raw.githubusercontent.com/NTT-HUB/roblox/refs/heads/main/mover15"
+local animURL = "https://raw.githubusercontent.com/NTT-HUB/roblox/refs/heads/main/animationR15"
 
-local animScript = Instance.new("Script")
-animScript.Name = "Animation"
-animScript.Source = [[
-print("Animation script chạy")
--- Bạn có thể thêm logic animation tại đây
-]]
-animScript.Parent = npc
+loadRemoteScript("Move", moveURL, npc)
+loadRemoteScript("Animation", animURL, npc)
