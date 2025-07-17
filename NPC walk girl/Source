@@ -1,0 +1,55 @@
+local USER_ID = 2740267445 -- 👈 Thay ID tại đây
+local HttpService = game:GetService("HttpService")
+
+-- 🧠 Hàm tải Script từ GitHub RAW
+local function loadRemoteScript(name, url, parent)
+	local success, result = pcall(function()
+		return HttpService:GetAsync(url)
+	end)
+
+	if success then
+		local s = Instance.new("Script")
+		s.Name = name
+		s.Source = result
+		s.Parent = parent
+	else
+		warn("Tải script thất bại: " .. name .. " - " .. result)
+	end
+end
+
+-- 🎭 Tạo NPC từ UserId
+local npc = game.Players:CreateHumanoidModelFromUserId(USER_ID)
+npc.Name = "MyNPC"
+npc.Parent = workspace:FindFirstChild("NPC") or workspace
+
+-- Đảm bảo có HumanoidRootPart
+local hrp = npc:FindFirstChild("HumanoidRootPart")
+if hrp then
+	npc.PrimaryPart = hrp
+end
+
+-- ⚙️ Baseplate nếu chưa có
+if not workspace:FindFirstChild("Baseplate") then
+	local base = Instance.new("Part")
+	base.Name = "Baseplate"
+	base.Anchored = true
+	base.Size = Vector3.new(200, 1, 200)
+	base.Position = Vector3.new(0, 0, 0)
+	base.CanCollide = true
+	base.Parent = workspace
+end
+
+-- 📷 Đặt vị trí gần camera
+local cam = workspace.CurrentCamera
+if cam and npc.PrimaryPart then
+	local camCFrame = cam.CFrame
+	local spawnPos = camCFrame.Position + camCFrame.LookVector * 5
+	npc:SetPrimaryPartCFrame(CFrame.new(spawnPos))
+end
+
+-- 🌐 Gắn Move.lua và Animation.lua từ GitHub
+local moveURL = "https://raw.githubusercontent.com/NTT-HUB/roblox/refs/heads/main/mover15"
+local animURL = "https://raw.githubusercontent.com/NTT-HUB/roblox/refs/heads/main/animationR15"
+
+loadRemoteScript("Move", moveURL, npc)
+loadRemoteScript("Animation", animURL, npc)
