@@ -1,0 +1,44 @@
+local USER_ID = 2740267445 -- 👈 Thay ID tại đây
+
+-- Tạo NPC từ user ID
+local npc = game.Players:CreateHumanoidModelFromUserId(USER_ID)
+npc.Name = "MyNPC"
+npc.Parent = workspace.NPC
+
+-- Đảm bảo nhân vật có HumanoidRootPart và đặt làm PrimaryPart
+local hrp = npc:FindFirstChild("HumanoidRootPart")
+if hrp then
+	npc.PrimaryPart = hrp
+end
+
+-- Đảm bảo có Baseplate
+if not workspace:FindFirstChild("Baseplate") then
+	local base = Instance.new("Part")
+	base.Name = "Baseplate"
+	base.Anchored = true
+	base.Size = Vector3.new(200, 1, 200)
+	base.Position = Vector3.new(0, 0, 0)
+	base.CanCollide = true
+	base.Parent = workspace
+end
+
+-- Đặt vị trí NPC đứng trên baseplate
+if npc.PrimaryPart then
+	npc:SetPrimaryPartCFrame(CFrame.new(0, 5, 0)) -- Cao 5 để rơi xuống đất
+end
+
+-- 🧠 Tạo 2 script con: Move và Animation
+local moveScript = Instance.new("Script")
+moveScript.Name = "Move"
+moveScript.Source = [[
+
+]]
+moveScript.Parent = npc
+
+
+local animScript = Instance.new("Script")
+animScript.Name = "Animation"
+animScript.Source = [[
+
+]]
+animScript.Parent = npc
