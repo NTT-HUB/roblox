@@ -48,8 +48,8 @@ if cam and npc.PrimaryPart then
 end
 
 -- 🌐 Gắn Move.lua và Animation.lua từ GitHub
-local moveURL = "https://raw.githubusercontent.com/NTT-HUB/roblox/refs/heads/main/mover15"
-local animURL = "https://raw.githubusercontent.com/NTT-HUB/roblox/refs/heads/main/animationR15"
+local moveURL = "https://raw.githubusercontent.com/NTT-HUB/roblox/refs/heads/main/NPC%20walk%20girl/Move"
+local animURL = "https://raw.githubusercontent.com/NTT-HUB/roblox/refs/heads/main/NPC%20walk%20girl/Animation"
 
 loadRemoteScript("Move", moveURL, npc)
 loadRemoteScript("Animation", animURL, npc)
