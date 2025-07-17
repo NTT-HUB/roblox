@@ -1,0 +1,52 @@
+local USER_ID = 2740267445 -- 👈 Thay ID tại đây
+
+-- Tạo NPC từ user ID
+local npc = game.Players:CreateHumanoidModelFromUserId(USER_ID)
+npc.Name = "MyNPC"
+npc.Parent = workspace
+
+-- Đảm bảo nhân vật có HumanoidRootPart và đặt làm PrimaryPart
+local hrp = npc:FindFirstChild("HumanoidRootPart")
+if hrp then
+	npc.PrimaryPart = hrp
+end
+
+-- Đảm bảo có Baseplate
+if not workspace:FindFirstChild("Baseplate") then
+	local base = Instance.new("Part")
+	base.Name = "Baseplate"
+	base.Anchored = true
+	base.Size = Vector3.new(200, 1, 200)
+	base.Position = Vector3.new(0, 0, 0)
+	base.CanCollide = true
+	base.Parent = workspace
+end
+
+-- Đặt vị trí NPC đứng trên baseplate
+if npc.PrimaryPart then
+	npc:SetPrimaryPartCFrame(CFrame.new(0, 5, 0)) -- Cao 5 để rơi xuống đất
+end
+
+-- Tắt khả năng nhảy
+local humanoid = npc:FindFirstChildWhichIsA("Humanoid")
+if humanoid then
+	humanoid.JumpPower = 0
+	humanoid.JumpHeight = 0
+	humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, false)
+	humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall, false)
+end
+
+-- Tự động di chuyển mỗi 3 giây
+task.spawn(function()
+	while true do
+		if npc.PrimaryPart and humanoid then
+			local currentPos = npc.PrimaryPart.Position
+			local targetPos = currentPos + Vector3.new(math.random(-10, 10), 0, math.random(-10, 10))
+
+			humanoid:MoveTo(targetPos)
+			humanoid.MoveToFinished:Wait()
+
+			task.wait(3)
+		end
+	end
+end)
